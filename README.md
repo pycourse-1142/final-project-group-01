@@ -23,6 +23,12 @@
 
 ##  二、組員分工紀錄 (佔比 10%)
 | 學號 | 姓名 | 主要負責模組 / 任務描述 | 預估貢獻度 (%) |
+ 1. main.py
+ 2. data_loader.py
+ 3. cleaner.py
+ 4. analyzer.py
+ 5. visualizer.py
+ 6. utils.py
 
 ---
 
