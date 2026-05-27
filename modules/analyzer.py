@@ -41,7 +41,6 @@ def analyze_transgress_type(df):
 def analyze_avg_penalty_by_type(df):
 
     # 排除 0 元案件
-    # 避免影響平均值
     penalty_df = df[df["penalty_money"] > 0]
 
     # 計算各違規類型平均裁罰金額
