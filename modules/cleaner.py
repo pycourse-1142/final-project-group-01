@@ -1,21 +1,55 @@
+# =========================
+# cleaner.py
+# =========================
+
 import pandas as pd
 
-#  這個檔案負責清理資料，包含轉換資料格式、處理缺失值等。
+# 清理資料
 
 def clean_data(df):
     df = df.copy()
 
-    # 將裁罰金額轉成數值
-    df["penalty_money"] = pd.to_numeric(df["penalty_money"], errors="coerce")
+    # 裁罰金額處理
+    df["penalty_money"] = (
+        df["penalty_money"]
+        .astype(str)
+        .str.replace(",", "", regex=False)
+    )
 
-    # 將日期轉成 datetime 格式
-    df["transgress_date"] = pd.to_datetime(df["transgress_date"], errors="coerce")
-    df["penalty_date"] = pd.to_datetime(df["penalty_date"], errors="coerce")
+    df["penalty_money"] = pd.to_numeric(
+        df["penalty_money"],
+        errors="coerce"
+    )
 
-    # 計算從違規到裁罰經過幾天
-    df["process_days"] = (df["penalty_date"] - df["transgress_date"]).dt.days
 
-    # 移除主要欄位缺失的資料
-    df = df.dropna(subset=["county_name", "transgress_type", "penalty_money"])
+    # 日期格式處理
+    df["transgress_date"] = pd.to_datetime(
+        df["transgress_date"],
+        errors="coerce"
+    )
+
+    df["penalty_date"] = pd.to_datetime(
+        df["penalty_date"],
+        errors="coerce"
+    )
+
+
+    # 計算處理天數
+    df["process_days"] = (
+        df["penalty_date"] - df["transgress_date"]
+    ).dt.days
+    df.loc[df["process_days"] < 0, "process_days"] = None
+
+
+    # 缺失值處理
+    df["is_improve"] = df["is_improve"].fillna("未知")
+
+    df = df.dropna(
+        subset=[
+            "county_name",
+            "transgress_type",
+            "penalty_money"
+        ]
+    )
 
     return df
