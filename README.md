@@ -92,7 +92,7 @@
 **分析簡述：** <br>
 在改善狀態（`is_improve`）的分布中，**「不須改善」佔了壓倒性的 914 筆**。這主要是因為高比例的案件屬於移動污染（汽機車排煙），此類違規通常為當場完成檢驗或單次處罰，不涉及後續限期改善工程。在需要改善的案件中，已有 52 筆「已改善完成」，但仍有 **33 筆處於「待改善」狀態**，這 33 筆將是環保單位後續列管追蹤的重點對象。此外，數據中還抓出 1 筆「未如期改善，另開立裁處書」的頑固個案，展現了程式對異常數據的精準捕捉。
 <div align="center">
-  <img width="500" height="500" alt="improve_status" src="https://github.com/user-attachments/assets/214ec5ac-f92e-4c12-a3d4-5e68a7bc5ded" />
+  <img width="200" height="150" alt="improve_status" src="https://github.com/user-attachments/assets/214ec5ac-f92e-4c12-a3d4-5e68a7bc5ded" />
 </div>
       
 <div align="center">
