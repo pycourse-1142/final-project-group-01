@@ -35,6 +35,11 @@
 > **重要規範**：請手動修改 `data/` 中的原始檔案，測試程式的「穩健性」。若程式因髒數據直接崩潰（Crash），此項不計分。
 
 | 測試情境 | 模擬動作 (如何「弄壞」數據) | 程式原始反應 | 修正後邏輯與檔案位置 |
+| :--- | :--- | :--- | :--- |
+| **1. 遭遇環境編碼衝突** | 將原始檔案轉換為台灣政府常見的 `Big5` 編碼儲存。 | `pandas` 直接拋出 `UnicodeDecodeError` 導致程式崩潰。 | **修復於 `modules/data_loader.py`**：<br>使用 `try-except` 機制，首選 UTF-8 讀取，若失敗則自動自動切換為 Big5 編碼，確保 100% 成功加載。 |
+| **2. 裁罰金額包含非數字** | 在金額欄位故意填入中文 `「新台幣十萬元」` 或空字串。 | `ValueError` 導致無法計算平均值或清洗中斷。 | **修復於 `modules/cleaner.py`**：<br>使用 `pd.to_numeric(..., errors='coerce')` 將無法解析的非數字強制轉為 `NaN`，並以 `fillna(0)` 填補，確保統計不中斷。 |
+| **3. 關鍵欄位名稱對不上** | 模擬平台更新，將 `penalty_money` 欄位改名或錯位。 | 拋出 `KeyError: 'penalty_money'` 異常。 | **修復於 `modules/cleaner.py`**：<br>加入欄位存在性檢查與 `try-except` 機制，並在 `main.py` 加入動態調試指令 `print(df.columns)` 以利人工對齊。 |
+| **4. 移動端執行路徑錯亂** | 在不同的資料夾路徑層級（如在 `modules/` 內）嘗試執行程式。 | 拋出 `ModuleNotFoundError` 或 `FileNotFoundError`。 | **修復於 `main.py`**：<br>嚴格禁止使用絕對路徑。統一規範為純粹的**相對路徑**（如 `data/ems_p_46.csv`），並配合 VS Code 終端機工作目錄根目錄規範執行。 |
 
 
 ---
@@ -53,12 +58,17 @@
 > 請將產出的 4 張圖表存於 `results/`，並在此處進行分析簡述。
 
 1.  **[分析 1] 各縣市案件數**：(新北市 (210件) 與 臺北市 (198件) 囊括前兩名，執法量最密集。)
-- 分析簡述： </n>
-根據 1000 筆有效數據統計，新北市（210 筆） 與 臺北市（198 筆） 顯著位居全臺環境裁罰案件量的前兩名，兩者合計即佔了總案件數的四成。其次為高雄市（98 筆）與桃園市（91 筆）。這項結果反映出雙北都市化程度極高、人口密度稠密，不論是交通工具排放還是密集的商業活動，皆導致環保稽查與民眾檢舉的頻率遠高於其他縣市。
-    <img width="248" height="218" alt="image" src="https://github.com/user-attachments/assets/334a4633-94fa-4943-b506-1aae7469b995" />
-<img width="1000" height="600" alt="county_case_top10" src="https://github.com/user-attachments/assets/8a05eb80-0bff-464c-a5c2-d9514b52d695" />
+**分析簡述：** <br/ >
+根據 1000 筆有效數據統計，**新北市（210 筆）** 與 **臺北市（198 筆）** 顯著位居全臺環境裁罰案件量的前兩名，兩者合計即佔了總案件數的四成。其次為高雄市（98 筆）與桃園市（91 筆）。這項結果反映出雙北都市化程度極高、人口密度稠密，不論是交通工具排放還是密集的商業活動，皆導致環保稽查與民眾檢舉的頻率遠高於其他縣市。
+<br>
+<div align="center">
+  <img width="1000" height="600" alt="county_case_top10" src="https://github.com/user-attachments/assets/334a4633-94fa-4943-b506-1aae7469b995" />
+</div>
+<div align="center">
+  <img width="1000" height="600" alt="county_case_top10" src="https://github.com/user-attachments/assets/8a05eb80-0bff-464c-a5c2-d9514b52d695" />
+</div>
 
-2.  **[分析 2] 違規類型案件數**：(移動污染 (577件) 壓倒性最多，佔了超過一半的案件量。)
+3.  **[分析 2] 違規類型案件數**：(移動污染 (577件) 壓倒性最多，佔了超過一半的案件量。)
 - 分析簡述：
 違規類型的分組數據呈現極端的兩極化。「移動污染」以 577 筆案件高居第一名，佔總體案件的 57.7%，其次為一般廢棄物（115 筆）與事業廢棄物（100 筆）。這說明環保單位日常最主要的業務大宗，其實是針對汽機車排煙、烏賊車等機動車輛的「移動污染源」進行稽查取締。
     <img width="243" height="212" alt="image" src="https://github.com/user-attachments/assets/e1a313f9-4695-4538-ad68-9751df924d9c" />
