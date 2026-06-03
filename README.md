@@ -99,7 +99,7 @@
   <img width="1200" height="600" alt="improve_status" src="https://github.com/user-attachments/assets/6ed5fe79-02b1-41a0-afcd-2e34ef3cbedb" />
 </div>
 
-<img width="300" height="20" alt="image" src="https://github.com/user-attachments/assets/b027cdbf-5a46-471a-a38e-cb3e434a1693" />
+<img width="350" height="20" alt="image" src="https://github.com/user-attachments/assets/b027cdbf-5a46-471a-a38e-cb3e434a1693" />
 
 ---
 
