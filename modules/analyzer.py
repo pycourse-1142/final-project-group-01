@@ -2,10 +2,11 @@
 # analyzer.py
 # =========================
 
+# 負責分析資料
+
 
 def analyze_county_cases(df):
 
-    # 依照縣市分組
     # 計算每個縣市案件數
     result = (
         df.groupby("county_name")
@@ -15,7 +16,7 @@ def analyze_county_cases(df):
             by="case_count",
             ascending=False
         )
-        .head(10)  # 只取前 10 名
+        .head(10)  
     )
 
     return result
@@ -23,7 +24,6 @@ def analyze_county_cases(df):
 
 def analyze_transgress_type(df):
 
-    # 依照違規類型分組
     # 計算案件數
     result = (
         df.groupby("transgress_type")
@@ -40,7 +40,6 @@ def analyze_transgress_type(df):
 
 def analyze_avg_penalty_by_type(df):
 
-    # 排除 0 元案件
     penalty_df = df[df["penalty_money"] > 0]
 
     # 計算各違規類型平均裁罰金額

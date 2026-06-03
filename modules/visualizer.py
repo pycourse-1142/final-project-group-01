@@ -5,14 +5,13 @@
 import os
 import matplotlib.pyplot as plt
 
-# 解決 matplotlib 中文亂碼問題
+# 解決中文亂碼、負號顯示問題
 plt.rcParams["font.sans-serif"] = ["Microsoft JhengHei"]
 
-# 解決負號顯示問題
 plt.rcParams["axes.unicode_minus"] = False
 
 
-# 建立資料夾
+# 建立 results 資料夾
 def ensure_results_folder():
 
     os.makedirs(
@@ -24,7 +23,6 @@ def ensure_results_folder():
 # 圖表 1：各縣市案件數 Top 10
 def plot_county_cases(df):
 
-    # 確保輸出資料夾存在
     ensure_results_folder()
 
     # 設定圖表大小
@@ -39,14 +37,15 @@ def plot_county_cases(df):
     plt.xlabel("案件數")
     plt.ylabel("縣市")
 
+    # 設定圖表標題
     plt.title("各縣市環境違規裁罰案件數 Top 10")
 
+    # 讓案件數最多顯示在最上方
     plt.gca().invert_yaxis()
 
     # 自動調整版面
     plt.tight_layout()
 
-    # 儲存
     plt.savefig(
         "results/county_case_top10.png"
     )
@@ -54,9 +53,7 @@ def plot_county_cases(df):
     plt.close()
 
 
-# =========================
 # 圖表 2：違規類型案件數分布
-# =========================
 def plot_transgress_type(df):
 
     ensure_results_folder()
@@ -86,9 +83,7 @@ def plot_transgress_type(df):
     plt.close()
 
 
-# =========================
 # 圖表 3：平均裁罰金額比較
-# =========================
 def plot_avg_penalty_by_type(df):
 
     ensure_results_folder()
@@ -106,6 +101,7 @@ def plot_avg_penalty_by_type(df):
 
     plt.title("不同違規類型之平均裁罰金額比較")
 
+    # 旋轉 x 軸文字
     plt.xticks(rotation=45, ha="right")
 
     plt.tight_layout()
@@ -117,9 +113,8 @@ def plot_avg_penalty_by_type(df):
     plt.close()
 
 
-# =========================
+
 # 圖表 4：改善狀態分布
-# =========================
 def plot_improve_status(df):
 
     ensure_results_folder()
@@ -137,6 +132,7 @@ def plot_improve_status(df):
 
     plt.title("環境違規案件改善狀態分布")
 
+    # 旋轉文字避免重疊
     plt.xticks(rotation=15)
 
     plt.tight_layout()
